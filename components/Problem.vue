@@ -4,12 +4,23 @@
     <div class="solution">
       <label for="code"> Your solution </label><br />
       <textarea id="code" v-model="fnCode" rows="30" cols="100" />
-      <button @click="runCode(true)">Run code on Test Data</button>
+      <div>
+        <button @click="runCode(true)">Run code on Test Data</button>
+        <button @click="runCode(false)">Run code on Puzzle</button>
+      </div>
       <hr />
-      <b>Output:</b><br />
-      <span id="final-answer">
+      <b>Output:</b>
+      <br />
+      <br />
+      <div v-if="computedAnswer" id="final-answer">
         {{ computedAnswer }}
-      </span>
+        <div id="result-output">
+          <span v-if="resultMessage == 'Correct Answer'"> &check; </span>
+          <span v-else> &times; </span>
+          {{ resultMessage }}
+        </div>
+      </div>
+      <div v-else>[Run code to test the output]</div>
     </div>
   </div>
 </template>
@@ -32,7 +43,15 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  solution: {
+    type: String,
+    required: true,
+  },
   sampleInput: {
+    type: String,
+    required: true,
+  },
+  puzzleInput: {
     type: String,
     required: true,
   },
@@ -47,23 +66,9 @@ const props = defineProps({
 });
 let LS_KEY = route.path;
 
-let computedAnswer = ref("[Run code to test the output]");
-let currentCode =
-  LS_get(LS_KEY) ||
-  `function x (input) {
-  const rows= input.split('\\n');
-
-  let digits = '1234567890'.split('');
-  let sum = 0;
-  rows.forEach ( r=> {
-    const found= [];
-    r.split('').forEach( c=> {
-      if (digits.indexOf(c) > -1) found.push(c);
-    })
-  sum += parseInt(found[0] + found[found.length - 1]);
-  })
-return sum;
-}`;
+let computedAnswer = ref("");
+let resultMessage = ref("");
+let currentCode = LS_get(LS_KEY) || props.solution;
 let fnCode = ref(currentCode);
 const sampleInput = `1abc2
 pqr3stu8vwx
@@ -79,20 +84,18 @@ function createFunction(funcDefinition) {
 }
 const runCode = (onTestData) => {
   let execFn = createFunction(fnCode.value);
-  const fnResults = execFn(onTestData ? sampleInput : "");
-  let finalAnswerElem = document.querySelector("#final-answer");
-  finalAnswerElem.innerText = fnResults;
-  if (props.sampleAnswer == fnResults)
-    finalAnswerElem.innerHTML += "<br/>&check; Correct Answer";
-  else finalAnswerElem.innerHTML += "<br/>&times; Incorrect Answer";
-
-  debugger;
+  const fnResults = execFn(onTestData ? props.sampleInput : props.puzzleInput);
+  computedAnswer.value = fnResults;
+  resultMessage.value =
+    fnResults == (onTestData ? props.sampleAnswer : props.finalAnswer)
+      ? "Correct Answer"
+      : "Incorrect Answer";
 };
 
 onMounted(() => {
   setInterval(() => {
     LS_set(LS_KEY, fnCode.value);
-  }, 5000);
+  }, 10000);
 });
 </script>
 <style scoped>
@@ -117,5 +120,15 @@ textarea {
   height: 40vh;
   width: 45vw;
   padding: 12px;
+}
+button {
+  margin: 6px;
+  padding: 8px;
+}
+button:hover,
+button:focus {
+  outline: none;
+  background: #303030;
+  color: #f0f0f0;
 }
 </style>

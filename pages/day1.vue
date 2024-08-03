@@ -4,6 +4,8 @@
       :day="day"
       :problem="problem"
       :sample-input="sampleInput"
+      :puzzle-input="puzzleInput"
+      :solution="solution"
       :sample-answer="sampleAnswer"
       :final-answer="finalAnswer"
     ></Problem>
@@ -15,13 +17,28 @@ import { defineComponent } from "@vue/composition-api";
 import { ref } from "vue";
 
 import Problem from "~/components/Problem.vue";
+import { puzzle } from "~/puzzles/day1";
 
 const day = ref("0");
-const sampleInput = ref(`
-1abc2
+const puzzleInput = ref(puzzle);
+const sampleInput = ref(`1abc2
 pqr3stu8vwx
 a1b2c3d4e5f
 treb7uchet`);
+
+const solution = ref(`function x (input) {
+  const rows= input.split('\\n');
+  let digits = '1234567890'.split('');
+  let sum = 0;
+  rows.forEach ( r=> {
+    const found= [];
+    r.split('').forEach( c=> {
+      if (digits.indexOf(c) > -1) found.push(c);
+    })
+  sum += parseInt(found[0] + found[found.length - 1]);
+  })
+return sum;
+}`);
 
 const sampleAnswer = ref(142);
 const finalAnswer = ref(53080);
