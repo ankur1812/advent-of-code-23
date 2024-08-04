@@ -125,7 +125,7 @@ const runCode = (onTestData) => {
 watch(
   () => props.toSolve,
   (newValue, oldValue) => {
-    fnCode.value = props.solution;
+    fnCode.value = LS_get(LS_KEY()) || props.solution;
     computedAnswer.value = "";
     resultMessage.value = "";
     inputString.value = "";
