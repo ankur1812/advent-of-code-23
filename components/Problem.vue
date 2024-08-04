@@ -1,13 +1,20 @@
 <template>
   <div class="day-view">
     <div class="problem" v-html="problem"></div>
-    <CodeEditor
-      :sample-input="sampleInput"
-      :puzzle-input="puzzleInput"
-      :solution="solution"
-      :sample-answer="sampleAnswer"
-      :final-answer="finalAnswer"
-    ></CodeEditor>
+    <div class="right-panel">
+      <select v-model="toSolve">
+        <option value="1">Solve Part 1</option>
+        <option v-if="finalAnswer2" value="2">Solve Part 2</option>
+      </select>
+      <CodeEditor
+        :toSolve="toSolve"
+        :sample-input="toSolve == 1 ? sampleInput : sampleInput2"
+        :puzzle-input="puzzleInput"
+        :solution="toSolve == 2 && solution2 ? solution2 : solution"
+        :sample-answer="toSolve == 1 ? sampleAnswer : sampleAnswer2"
+        :final-answer="toSolve == 1 ? finalAnswer : finalAnswer2"
+      ></CodeEditor>
+    </div>
   </div>
 </template>
 
@@ -28,11 +35,15 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  sampleInput: {
+  solution2: {
     type: String,
     required: true,
   },
   puzzleInput: {
+    type: String,
+    required: true,
+  },
+  sampleInput: {
     type: String,
     required: true,
   },
@@ -44,7 +55,18 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  sampleInput2: {
+    type: String,
+  },
+  sampleAnswer2: {
+    type: Number,
+  },
+  finalAnswer2: {
+    type: Number,
+  },
 });
+
+const toSolve = ref(1);
 </script>
 
 <style scoped>
@@ -55,7 +77,25 @@ const props = defineProps({
 }
 .problem {
   width: 50%;
-  max-height: 82vh;
+  max-height: calc(100vh - 120px);
   overflow-y: scroll;
+  border-right: 1px solid gray;
+}
+.right-panel {
+  /* max-height: calc(100vh - 120px);
+  overflow-y: scroll; */
+}
+select {
+  padding: 9px;
+}
+button {
+  margin: 6px;
+  padding: 8px;
+}
+button:hover,
+button:focus {
+  outline: none;
+  background: #303030;
+  color: #f0f0f0;
 }
 </style>
