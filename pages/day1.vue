@@ -3,11 +3,15 @@
     <Problem
       :day="day"
       :problem="problem"
-      :sample-input="sampleInput"
       :puzzle-input="puzzleInput"
       :solution="solution"
-      :sample-answer="sampleAnswer"
+      :solution2="solution2"
       :final-answer="finalAnswer"
+      :sample-input="sampleInput"
+      :sample-answer="sampleAnswer"
+      :sample-input2="sampleInput2"
+      :sample-answer2="sampleAnswer2"
+      :final-answer2="finalAnswer2"
     ></Problem>
   </div>
 </template>
@@ -25,6 +29,8 @@ const sampleInput = ref(`1abc2
 pqr3stu8vwx
 a1b2c3d4e5f
 treb7uchet`);
+const sampleAnswer = ref(142);
+const finalAnswer = ref(53080);
 
 const solution = ref(`function x (input) {
   const rows= input.split('\\n');
@@ -40,8 +46,37 @@ const solution = ref(`function x (input) {
 return sum;
 }`);
 
-const sampleAnswer = ref(142);
-const finalAnswer = ref(53080);
+const sampleInput2 = ref(`two1nine
+eightwothree
+abcone2threexyz
+xtwone3four
+4nineeightseven2
+zoneight234
+7pqrstsixteen`);
+const sampleAnswer2 = ref(281);
+const finalAnswer2 = ref(53268);
+const solution2 = ref(`function x (input) {
+  // Solution B 
+  const rows= input.split('\\n');
+  let digits = '1234567890'.split('');
+  let numWords = 'one,two,three,four,five,six,seven,eight,nine,zero'.split(',')
+  let allDigits = digits.concat(numWords);
+  let sum = 0;
+  let numHash = { 'one': '1', 'two': 2, 'three': '3', 'four': '4', 'five': '5', 'six': 6, 'seven': '7', 'eight': '8', 'nine': '9', 'zero': '0'}
+  rows.forEach ( r=> {
+    let first = -1, last = -1, firstNum = -1, lastNum = -1;
+    allDigits.forEach( d=> {
+      let index = r.indexOf(d);
+      if (index > -1) {
+        if (first == -1 || index < first) { first = index; firstNum = d; }
+        if (last == -1 || index > last) { last = index; lastNum = d; }
+      }
+    })
+    sum += parseInt((numHash[firstNum] || firstNum) + (numHash[lastNum] || lastNum)) ;
+  })
+return sum;
+}`);
+
 const problem = ref(
   `
 <main>
@@ -80,7 +115,7 @@ zoneight234
   <a href="https://twitter.com/intent/tweet?text=I%27ve+completed+%22Trebuchet%3F%21%22+%2D+Day+1+%2D+Advent+of+Code+2023&amp;url=https%3A%2F%2Fadventofcode%2Ecom%2F2023%2Fday%2F1&amp;related=ericwastl&amp;hashtags=AdventOfCode" target="_blank">Twitter</a>
   <a href="javascript:void(0);" onclick="var ms; try{ms=localStorage.getItem('mastodon.server')}finally{} if(typeof ms!=='string')ms=''; ms=prompt('Mastodon Server?',ms); if(typeof ms==='string' &amp;&amp; ms.length){this.href='https://'+ms+'/share?text=I%27ve+completed+%22Trebuchet%3F%21%22+%2D+Day+1+%2D+Advent+of+Code+2023+%23AdventOfCode+https%3A%2F%2Fadventofcode%2Ecom%2F2023%2Fday%2F1';try{localStorage.setItem('mastodon.server',ms);}finally{}}else{return false;}" target="_blank">Mastodon</a></span>]</span> this puzzle.</p>
 </main>`
-  // .replace(/\n/g, "<br><br>")
 );
+// .replace(/\n/g, "<br><br>")
 // debugger;
 </script>
