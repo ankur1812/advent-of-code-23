@@ -122,15 +122,14 @@ const runCode = (onTestData) => {
       : "Incorrect Answer";
 };
 
-watch(
-  () => props.toSolve,
-  (newValue, oldValue) => {
-    fnCode.value = LS_get(LS_KEY()) || props.solution;
-    computedAnswer.value = "";
-    resultMessage.value = "";
-    inputString.value = "";
-  }
-);
+const updateEditor = (newVal, oldVal) => {
+  fnCode.value = LS_get(LS_KEY()) || props.solution;
+  computedAnswer.value = "";
+  resultMessage.value = "";
+  inputString.value = "";
+};
+
+watch(() => props.toSolve, updateEditor);
 
 onMounted(() => {
   setInterval(() => {
