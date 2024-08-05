@@ -192,4 +192,10 @@ textarea#input-str {
   width: 70%;
   height: 100%;
 }
+@media only screen and (max-width: 728px) {
+  textarea {
+    width: 90%;
+    height: 30vh;
+  }
+}
 </style>

@@ -98,4 +98,16 @@ button:focus {
   background: #303030;
   color: #f0f0f0;
 }
+
+@media only screen and (max-width: 728px) {
+  .day-view {
+    flex-direction: column;
+  }
+  .problem {
+    width: 100%;
+    height: 35vh;
+    border-right: none;
+    border-bottom: 1px solid gray;
+  }
+}
 </style>
