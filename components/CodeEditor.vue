@@ -84,10 +84,13 @@ const props = defineProps({
 });
 // let LS_KEY = route.path;
 function LS_KEY() {
-  return route.path + (props.toSolve == 2 ? "_PART_2" : "");
+  return (
+    route.path.replaceAll("/", "_") + (props.toSolve == 2 ? "_PART_2" : "")
+  );
 }
 
 let inputString = ref("");
+let timerRef = ref("");
 let computedAnswer = ref("");
 let resultMessage = ref("");
 let currentCode = LS_get(LS_KEY()) || props.solution;
@@ -132,9 +135,16 @@ const updateEditor = (newVal, oldVal) => {
 watch(() => props.toSolve, updateEditor);
 
 onMounted(() => {
-  setInterval(() => {
+  timerRef.value = setInterval(() => {
     LS_set(LS_KEY(), fnCode.value);
   }, 10000);
+});
+
+onUnmounted(() => {
+  if (timerRef.value !== null) {
+    clearInterval(timerRef.value);
+    timerRef.value = null;
+  }
 });
 </script>
 
