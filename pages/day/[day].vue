@@ -3,6 +3,8 @@
     <Problem
       :day="day"
       :problem="problem"
+      :iframeLink="iframeLink"
+      :puzzleLink="puzzleLink"
       :puzzle-input="puzzleInput"
       :solution="solution"
       :solution2="solution2"
@@ -24,14 +26,23 @@ import { useRoute } from "vue-router";
 import Problem from "~/components/Problem.vue";
 import { day1 } from "~/puzzles/data/1";
 import { day2 } from "~/puzzles/data/2";
+import { day3 } from "~/puzzles/data/3";
 
 const route = useRoute();
 const dayNo = route.params.day;
 
-let data = dayNo == "1" ? day1 : day2;
+const dataHashmap = {
+  1: day1,
+  2: day2,
+  3: day3,
+};
+
+let data = dataHashmap[dayNo];
 
 const day = ref(dayNo);
 const puzzleInput = ref(data.puzzle);
+const iframeLink = ref(data.iframeLink);
+const puzzleLink = ref(data.puzzleLink);
 const sampleInput = ref(data.sampleInput);
 const sampleAnswer = ref(data.sampleAnswer);
 const finalAnswer = ref(data.finalAnswer);

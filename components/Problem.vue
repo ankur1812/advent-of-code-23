@@ -1,6 +1,15 @@
 <template>
   <div class="day-view">
-    <div class="problem" v-html="problem"></div>
+    <div class="problem">
+      <!-- <iframe v-if="iframeLink" :src="iframeLink" /> -->
+      <IframeLoader
+        class="iframe-loader"
+        v-if="iframeLink"
+        :url="iframeLink"
+        :injectedCss="injectedCss"
+      />
+      <div v-else v-html="problem"></div>
+    </div>
     <div class="right-panel">
       <select v-model="toSolve">
         <option value="1">Solve Part 1</option>
@@ -21,11 +30,20 @@
 <script setup>
 import { defineProps, onMounted } from "vue";
 import CodeEditor from "~/components/CodeEditor.vue";
+import IframeLoader from "~/components/IframeLoader.vue";
 
 const props = defineProps({
   day: {
     type: String,
     required: true,
+  },
+  iframeLink: {
+    type: String,
+    required: false,
+  },
+  puzzleLink: {
+    type: String,
+    required: false,
   },
   problem: {
     type: String,
@@ -67,6 +85,10 @@ const props = defineProps({
 });
 
 const toSolve = ref(1);
+
+const injectedCss = ref(`
+  body {opacity: 0.5}
+`);
 </script>
 
 <style scoped>
@@ -80,6 +102,11 @@ const toSolve = ref(1);
   max-height: calc(100vh - 120px);
   overflow-y: scroll;
   border-right: 1px solid gray;
+}
+iframe,
+.iframe-loader {
+  width: 100%;
+  height: 100%;
 }
 .right-panel {
   /* max-height: calc(100vh - 120px);

@@ -6,6 +6,7 @@
     <div class="links">
       <NuxtLink to="/day/1"> Day 1 </NuxtLink>
       <NuxtLink to="/day/2"> Day 2 </NuxtLink>
+      <NuxtLink to="/day/3"> Day 3 </NuxtLink>
     </div>
   </header>
 </template>
