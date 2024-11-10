@@ -1,6 +1,10 @@
 <template>
   <div class="day-view">
-    <div class="problem" v-html="problem"></div>
+    <div class="problem">
+      <slot name="problem">
+        <div v-html="problem"></div>
+      </slot>
+    </div>
     <div class="right-panel">
       <select v-model="toSolve">
         <option value="1">Solve Part 1</option>
